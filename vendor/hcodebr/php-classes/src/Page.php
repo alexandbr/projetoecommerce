@@ -6,14 +6,16 @@ namespace Hcode;
 
 	class Page {
 		private $tpl;
-		private $option =[];
+		private $options =[];
 		private $defaults =[
+			"header"=>true,
+			"footer"=>true,
 			"data" => []
 		];
 
 
 		public function __construct ($opts = array(), $tpl_dir = "/views/"){
-			$this->option = array_merge($this->defaults, $opts);
+			$this->options = array_merge($this->defaults, $opts);
 			$config = array(
 				"tpl_dir"    => $_SERVER["DOCUMENT_ROOT"].$tpl_dir,
 				"cache_dir"  => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
@@ -22,9 +24,12 @@ namespace Hcode;
 			);
 
 			Tpl::configure($config);
+
 			$this->tpl = new Tpl;
-			$this->setData($this->option["data"]);
-			$this->tpl->draw("header");
+
+			$this->setData($this->options["data"]);
+
+			if($this->options["header"] === true) $this->tpl->draw("header");
 			
 		}
 
@@ -43,7 +48,8 @@ namespace Hcode;
 			return $this->tpl->draw($name, $returnHTML);
 		}
 		public function __destruct(){
-			$this->tpl->draw("footer");
+
+			if ($this->options["footer"] === true) $this->tpl->draw("footer");
 		}
 	}
  ?>
