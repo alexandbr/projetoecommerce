@@ -73,6 +73,35 @@ class User extends Model {
 		$_SESSION[User::SESSION] = NULL;
 	}
 
+
+	public static function listAll()
+	{
+
+		$sql = new Sql();
+
+		$sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");
+	}
+
+
+	public function save()
+	{
+		$sql = new Sql();
+
+		$results = $sql->select ("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
+
+			$this->getdesperson(),
+			$this->getdeslogin(),
+			$this->getdespassword(),
+			$this->getdesemail(),
+			$this->nrphone(),
+			$this->inadmin()
+
+		));
+
+		$this->setData($results[0]);
+
+	}
+
 }
 
  ?>
