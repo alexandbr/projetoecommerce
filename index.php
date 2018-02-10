@@ -108,9 +108,11 @@
 
 		User::verifyLogin();
 
+        $_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;;
+
 		$user = new User();
 
-		$user->setData($_POST);
+        $user->setData($_POST);
 
 		$user->save();
 
